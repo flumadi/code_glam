@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() => runApp(const CodeGlamApp());
-
+void main() => runApp(MaterialApp(home: Scaffold(body: Center(child: Text('TEST')))));
 class CodeGlamApp extends StatelessWidget {
   const CodeGlamApp({super.key});
 
