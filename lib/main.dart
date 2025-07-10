@@ -12,6 +12,7 @@ class CodeGlamApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFFF9EB3),
+        ),
         useMaterial3: true,
       ),
       home: const WelcomeScreen(),
