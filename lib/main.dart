@@ -10,9 +10,8 @@ class CodeGlamApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFF9EB3),
-        useMaterial3: true,
+        primarySwatch: Colors.pink,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const WelcomeScreen(),
     );
@@ -95,23 +94,12 @@ class WelcomeScreen extends StatelessWidget {
                       Image.network(
                         'https://cdn.pixabay.com/photo/2022/03/20/15/13/woman-7080996_1280.png',
                         height: 180,
-                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 40),
-                ElevatedButton.icon(
+                ElevatedButton(
                   onPressed: () {
                     debugPrint("Let's glam and code!");
                     Navigator.push(
@@ -119,8 +107,7 @@ class WelcomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const LoginScreen()),
                     );
                   },
-                  icon: const Icon(Icons.auto_awesome_rounded),
-                  label: const Text(
+                  child: const Text(
                     'START YOUR JOURNEY',
                     style: TextStyle(
                       fontSize: 18,
@@ -128,8 +115,8 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF880E4F),
-                    foregroundColor: Colors.white,
+                    primary: const Color(0xFF880E4F),
+                    onPrimary: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
                       vertical: 18,
@@ -137,7 +124,6 @@ class WelcomeScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    shadowColor: Colors.pink[300],
                     elevation: 10,
                   ),
                 ),
@@ -151,11 +137,7 @@ class WelcomeScreen extends StatelessWidget {
 }
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
-
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _obscurePassword = true;
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -192,65 +174,44 @@ class LoginScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF880E4F),
                       ),
-                    ),
                     const SizedBox(height: 30),
-                    TextField(
-                      controller: _usernameController,
+                    const TextField(
                       decoration: InputDecoration(
                         labelText: 'Developer ID',
-                        prefixIcon: const Icon(Icons.code),
+                        prefixIcon: Icon(Icons.code),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                         filled: true,
-                        fillColor: Colors.pink[50],
+                        fillColor: Color(0xFFF8BBD0),
                       ),
-                    ),
                     const SizedBox(height: 20),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: _obscurePassword,
+                    const TextField(
+                      obscureText: true,
                       decoration: InputDecoration(
                         labelText: 'Glam Passcode',
-                        prefixIcon: const Icon(Icons.lock),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: () {
-                            _obscurePassword = !_obscurePassword;
-                            (context as Element).markNeedsBuild();
-                          },
-                        ),
+                        prefixIcon: Icon(Icons.lock),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                         filled: true,
-                        fillColor: Colors.pink[50],
+                        fillColor: Color(0xFFF8BBD0),
                       ),
-                    ),
                     const SizedBox(height: 30),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              debugPrint('Login initiated for ${_usernameController.text}');
+                              debugPrint('Login initiated');
                               Navigator.pop(context);
                             },
+                            child: const Text('LOGIN'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF4A148C),
+                              primary: const Color(0xFF4A148C),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            child: const Text(
-                              'LOGIN',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -261,19 +222,17 @@ class LoginScreen extends StatelessWidget {
                             onPressed: () {
                               debugPrint('Registration started');
                             },
+                            child: const Text(
+                              'REGISTER',
+                              style: TextStyle(
+                                color: Color(0xFF880E4F),
+                              ),
+                            ),
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Color(0xFF880E4F)),
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            child: const Text(
-                              'REGISTER',
-                              style: TextStyle(
-                                color: Color(0xFF880E4F),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
                               ),
                             ),
                           ),
