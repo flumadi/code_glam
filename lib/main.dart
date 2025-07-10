@@ -94,6 +94,17 @@ class WelcomeScreen extends StatelessWidget {
                       Image.network(
                         'https://cdn.pixabay.com/photo/2022/03/20/15/13/woman-7080996_1280.png',
                         height: 180,
+                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
                       ),
                     ],
                   ),
