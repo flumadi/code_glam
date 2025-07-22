@@ -1,6 +1,18 @@
+import 'package:code_glam/core/constants/app_colors.dart';
+import 'package:code_glam/core/constants/app_strings.dart';
+import 'package:code_glam/features/auth/presentation/screens/login_screen.dart';
+import 'package:code_glam/features/auth/presentation/screens/register_screen.dart';
+import 'package:code_glam/features/send_money/presentation/screens/send_money_screen.dart';
+import 'package:code_glam/routes/app_router.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const CodeGlamApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const CodeGlamApp());
+}
+
 class CodeGlamApp extends StatelessWidget {
   const CodeGlamApp({super.key});
 
@@ -8,15 +20,17 @@ class CodeGlamApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: AppStrings.appName,
       theme: ThemeData(
         primarySwatch: Colors.pink,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFF9EB3),
+          seedColor: AppColors.primaryColor,
         ),
         useMaterial3: true,
       ),
-      home: const WelcomeScreen(),
+      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: RouteNames.welcome,
     );
   }
 }
@@ -115,11 +129,7 @@ class WelcomeScreen extends StatelessWidget {
                 const SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () {
-                    debugPrint("Let's glam and code!");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    );
+                    Navigator.pushNamed(context, RouteNames.login);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF880E4F),
@@ -143,141 +153,6 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ACCESS YOUR GLAM SPACE'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(30),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.pink.shade100,
-                      blurRadius: 15,
-                      spreadRadius: 2,
-                    )
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Tech-Beauty Login',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF880E4F),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Developer ID',
-                        prefixIcon: const Icon(Icons.code),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        filled: true,
-                        fillColor: const Color(0xFFF8BBD0),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Glam Passcode',
-                        prefixIcon: const Icon(Icons.lock),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        filled: true,
-                        fillColor: const Color(0xFFF8BBD0),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              debugPrint('Login initiated');
-                              Navigator.pop(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF4A148C),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            child: const Text('LOGIN'),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () {
-                              debugPrint('Registration started');
-                            },
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Color(0xFF880E4F)),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            child: const Text(
-                              'REGISTER',
-                              style: TextStyle(
-                                color: Color(0xFF880E4F),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    TextButton(
-                      onPressed: () {
-                        debugPrint('Forgot password tapped');
-                      },
-                      child: const Text(
-                        'Forgot your passcode?',
-                        style: TextStyle(color: Color(0xFF4A148C)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 30),
-              const Text(
-                '“Code with confidence, glow with purpose”',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: Colors.deepPurple,
-                ),
-              ),
-            ],
           ),
         ),
       ),
