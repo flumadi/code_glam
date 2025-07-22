@@ -1,17 +1,6 @@
-import 'package:code_glam/core/constants/app_colors.dart';
-import 'package:code_glam/core/constants/app_strings.dart';
-import 'package:code_glam/features/auth/presentation/screens/login_screen.dart';
-import 'package:code_glam/features/auth/presentation/screens/register_screen.dart';
-import 'package:code_glam/features/send_money/presentation/screens/send_money_screen.dart';
-import 'package:code_glam/routes/app_router.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const CodeGlamApp());
-}
+void main() => runApp(const CodeGlamApp());
 
 class CodeGlamApp extends StatelessWidget {
   const CodeGlamApp({super.key});
@@ -20,18 +9,13 @@ class CodeGlamApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: AppStrings.appName,
       theme: ThemeData(
-        primarySwatch: Colors.pink,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.primaryColor,
-        ),
+          seedColor: const Color(0xFFFF9EB3),
         useMaterial3: true,
       ),
-      onGenerateRoute: AppRouter.generateRoute,
-      initialRoute: RouteNames.welcome,
-    );
+      home: const WelcomeScreen(),
+    ));
   }
 }
 
@@ -43,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'CODE & GLAM 💻✨',
+          'CODE & GLAM ',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -67,93 +51,224 @@ class WelcomeScreen extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(30),
-                  margin: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.pink.shade200,
+                      blurRadius: 20,
+                      spreadRadius: 2,
+                    )
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      ' Hello, Tech Girlies! ',
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF880E4F),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 15),
+                    const Text(
+                      'Balance coding sessions\nwith self-care routines',
+                      style: TextStyle(
+                        fontSize: 18,
+                        height: 1.4,
+                        color: Color(0xFF4A148C),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 25),
+                    Image.network(
+                      'https://cdn.pixabay.com/photo/2022/03/20/15/13/woman-7080996_1280.png',
+                      height: 180,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
+              ElevatedButton.icon(
+                onPressed: () {
+                  print("Let's glam and code!");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  );
+                },
+                icon: const Icon(Icons.auto_awesome_rounded),
+                label: const Text(
+                  'START YOUR JOURNEY',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF880E4F),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 18,
+                  ),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.pink.shade200,
-                        blurRadius: 20,
-                        spreadRadius: 2,
-                      )
-                    ],
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        '✨ Hello, Tech Queen! ✨',
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF880E4F),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 15),
-                      const Text(
-                        'Balance coding sessions\nwith self-care routines',
-                        style: TextStyle(
-                          fontSize: 18,
-                          height: 1.4,
-                          color: Color(0xFF4A148C),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 25),
-                      Image.network(
-                        'https://cdn.pixabay.com/photo/2022/03/20/15/13/woman-7080996_1280.png',
-                        height: 180,
-                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
-                      ),
-                    ],
-                  ),
+                  shadowColor: Colors.pink[300],
+                  elevation: 10,
                 ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, RouteNames.login);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF880E4F),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 18,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    elevation: 10,
-                  ),
-                  child: const Text(
-                    'START YOUR JOURNEY',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ACCESS YOUR GLAM SPACE'),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.pink.shade100,
+                    blurRadius: 15,
+                    spreadRadius: 2,
+                  )
+                ],
+              ),
+              child: Column(
+                children: [
+                  const Text(
+                    'Tech-Beauty Login',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF880E4F),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Developer ID',
+                      prefixIcon: const Icon(Icons.code),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      filled: true,
+                      fillColor: Colors.pink[50],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Glam Passcode',
+                      prefixIcon: const Icon(Icons.lock),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      filled: true,
+                      fillColor: Colors.pink[50],
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.visibility),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => print('Login initiated'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF4A148C),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: const Text(
+                            'LOGIN',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => print('Registration started'),
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Color(0xFF880E4F)),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: const Text(
+                            'REGISTER',
+                            style: TextStyle(
+                              color: Color(0xFF880E4F),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Forgot your passcode?',
+                      style: TextStyle(color: Color(0xFF4A148C)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
+            const Text(
+              '“Code with confidence, glow with purpose”',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                color: Colors.deepPurple,
+              ),
+            ),
+          ],
         ),
       ),
     );
